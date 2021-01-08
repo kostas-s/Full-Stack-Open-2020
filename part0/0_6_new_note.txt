@@ -1,0 +1,9 @@
+title 0_6_new_note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: JSON file
+
+note over browser:
+browser proceeds to update the notes data
+with the new JSON it receives
+end note

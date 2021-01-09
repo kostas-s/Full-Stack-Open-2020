@@ -4,11 +4,16 @@ import ReactDOM from 'react-dom';
 const Button = ({text, handleClick}) =>
     <button onClick={handleClick}>{text}</button>
 
-const Votes = ({count}) => <p>has {count} votes</p>
-
 const Header = ({text}) => <h1>{text}</h1>
 
-const Anecdote = ({text}) => <p>{text}</p>
+const Anecdote = ({text, votes}) => {
+return (
+<div>
+<p>{text}</p>
+<p>has {votes} votes</p>
+</div>
+)
+}
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
@@ -23,15 +28,22 @@ const App = (props) => {
     setMaxIdx(maxIdx)
   }
 
+  const getRandomIdx = () => {
+    let randomIdx = Math.floor(Math.random() * props.anecdotes.length)
+    while (randomIdx === selected) {
+      randomIdx = Math.floor(Math.random() * props.anecdotes.length)
+    }
+    return randomIdx
+  }
+
   return (
     <div>
       <Header text="Anecdote of the day"/>
-      <Anecdote text={props.anecdotes[selected]}/>
-      <Votes count={votes[selected]}/>
+      <Anecdote text={props.anecdotes[selected]} votes={votes[selected]}/>
       <Button text="add vote" handleClick={() => addVote()}/>
-      <Button text="next anecdote" handleClick={() => setSelected(Math.floor(Math.random() * props.anecdotes.length))} />
+      <Button text="next anecdote" handleClick={() => setSelected(getRandomIdx)} />
       <Header text="Anecdote with most votes"/>
-      <Anecdote text={props.anecdotes[maxIdx]}/>
+      <Anecdote text={props.anecdotes[maxIdx]} votes={votes[maxIdx]}/>
     </div>
   )
 }

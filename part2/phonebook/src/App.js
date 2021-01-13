@@ -58,14 +58,18 @@ const App = () => {
   const deleteEntry = (event) => {
     event.preventDefault()
     
-    const id = event.target.id.toString()
-    const name = persons.find(person => person.id.toString() === id).name
+    const id = Number(event.target.id)
+    const person = persons.find(person => person.id === id)
+    if (!person) {
+      return null;
+    }
+    const name = person.name
     const confirm = window.confirm(`Delete ${name}?`)
     if (confirm) {  
       deletePerson(id)
       .then(response => {
-      setPersons(persons.filter(person => person.id.toString() !== id))
-      setShownPersons(persons.filter(person => person.id.toString() !== id))
+      setPersons(persons.filter(person => person.id !== id))
+      setShownPersons(persons.filter(person => person.id !== id))
       setNotificationType('n')
       setNotificationMessage(`${name} successfully deleted`)
       setTimeout(() => {
@@ -84,11 +88,12 @@ const App = () => {
   }
 
   const updateEntry = (id, newPerson) => {
+    id = Number(id)
     updatePerson(id, newPerson)
     .then(response => {
       console.log(response)
-      setPersons(persons.map(person => person.id.toString() !== id.toString() ? person : response))
-      setShownPersons(shownPersons.map(person => person.id.toString() !== id.toString() ? person : response))
+      setPersons(persons.map(person => person.id !== id ? person : response))
+      setShownPersons(shownPersons.map(person => person.id !== id ? person : response))
       setNotificationType('n')
       setNotificationMessage(`${newPerson.name} successfully updated`)
       setTimeout(() => {
